@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "G836i5hDhlW6X59QsdOAWuJmWzvwWACKGKQgjdFHHZqcxV6fLk7KMnXgFQZSDhnySaEDl+OIopHsChhrduXo9A==",
+  "success": true,
+  "projectFilePath": "/Users/isracarballo/Desktop/Calima/web_api_test/WebService.Core/WebService.Core.csproj",
+  "expectedPackageFiles": [
+    "/Users/isracarballo/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
