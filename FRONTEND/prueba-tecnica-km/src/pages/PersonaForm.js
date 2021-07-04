@@ -49,7 +49,6 @@ const PersonaForm = () => {
   const [fechaNacimiento, setFechaNacimiento] = useState();
 
   useLayoutEffect(() => {
-    console.log(personaEdit);
     if (personaEdit)
       setFechaNacimiento(
         new Date(personaEdit?.fechaNacimiento).toISOString().split("T")[0]
@@ -155,7 +154,6 @@ const PersonaForm = () => {
   useEffect(() => {
     let currentRegion = regiones.filter((x) => x.codigo == regionSelected)[0];
     setCiudadesByRegion(currentRegion?.ciudads);
-    console.log(currentRegion);
   }, [regionSelected, regiones]);
 
   let optionCiudades = ciudades?.map((ciudad) => (
