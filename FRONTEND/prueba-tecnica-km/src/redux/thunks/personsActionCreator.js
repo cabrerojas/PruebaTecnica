@@ -52,8 +52,6 @@ export const tryUpdatePerson = (person, id, history) => {
       dispatch(putPersonRequest(person));
 
       let response = await put(id.replace('}', ''), person);
-      console.log('estoy enresponse');
-      console.log(response);
       if (response.hasOwnProperty("error")) {
           dispatch(error({
               ...notification,
@@ -78,7 +76,6 @@ export const tryUpdatePerson = (person, id, history) => {
 export const tryCreatePerson = (person, history) => {
   return async (dispatch, getState) => {
     dispatch(createPersonRequest(person));
-    console.log(person);
 
     let response = await post(person);
     if (response.hasOwnProperty("error")) {
