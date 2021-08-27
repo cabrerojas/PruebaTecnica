@@ -16,7 +16,6 @@ import {
 import Select from "react-select";
 
 import validatePersonForm from "../utils/validatePersonForm";
-import validateRut from "../utils/validateRut";
 
 const PersonForm = () => {
   const history = useHistory();
@@ -46,7 +45,6 @@ const PersonForm = () => {
   const [regionsOptions, setRegionsOptions] = useState([]);
   const [citiesOptions, setCitiesOptions] = useState([]);
   const [communesOptions, setCommunesOptions] = useState([]);
-  const [errors, setErrors] = useState({});
 
   const person = useSelector((state) => state.persons.person_edit);
   const regions = useSelector((state) => state.regions.regions);
@@ -56,13 +54,16 @@ const PersonForm = () => {
   const [selectedCityOption, setSelectedCityOption] = useState();
   const [selectedCommuneOption, setSelectedCommuneOption] = useState();
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     if (!isCreating) dispatch(getPerson(id));
     dispatch(getRegions());
   }, []);
 
   useEffect(() => {
-    if (person) {
+    if (person && regions.length > 0) {
+      //Parseo datos evitar enviar null a un componente controlado
       setPersonData({
         ...personData,
         run: person.run ? person.run : "",
@@ -88,12 +89,13 @@ const PersonForm = () => {
         regionsOptions.find((region) => region.value === person.regionCodigo)
       );
     }
-  }, [person]);
+  }, [person, regions]);
 
   /*TRAER DATOS SI CAMBIA EL COMBO*/
 
   useEffect(() => {
     dispatch(getCities(personData.regionCodigo));
+    /**/
   }, [selectedRegionOption]);
 
   useEffect(() => {
@@ -180,8 +182,6 @@ const PersonForm = () => {
     e.preventDefault();
 
     let { errorsRes, body, dv } = validatePersonForm(personData);
-    console.log(dv);
-    //const { runError, body, dv } = validateRut(personData.run);
 
     setErrors(errorsRes);
 

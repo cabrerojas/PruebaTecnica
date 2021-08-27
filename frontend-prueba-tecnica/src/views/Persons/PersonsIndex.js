@@ -1,16 +1,26 @@
 import React, { useEffect } from "react";
 import Person from "../../components/Persons/Person";
 import { useDispatch, useSelector } from "react-redux";
-import { getPersons, cleanPersonEdit } from "../../redux/actions/persons";
+import {
+  getPersons,
+  cleanPersonEdit,
+  setShowConfirmModal,
+  deletePerson,
+  cleanDeleteId,
+} from "../../redux/actions/persons";
 import { useHistory } from "react-router-dom";
-
+import ConfirmModal from "../../components/common/ConfirmModal";
 const PersonsIndex = () => {
   const history = useHistory();
 
   const dispatch = useDispatch();
   const persons = useSelector((state) => state.persons.person_list);
+  const deleteId = useSelector((state) => state.persons.person_id_delete);
+  const confirmModalStatus = useSelector(
+    (state) => state.persons.confirm_modal_status
+  );
 
-  useEffect(async () => {
+  useEffect(() => {
     dispatch(getPersons());
   }, []);
 
@@ -19,8 +29,32 @@ const PersonsIndex = () => {
     history.push("/person/" + id);
   };
 
+  //  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const confirmDelete = () => {
+    dispatch(deletePerson(deleteId));
+    closeModal();
+    // console.log("eliminando id:" + deleteId);
+  };
+
+  const closeModal = () => {
+    dispatch(setShowConfirmModal(false));
+    dispatch(cleanDeleteId());
+    //despachar cerrar modal
+  };
+
   return (
     <>
+      {confirmModalStatus ? (
+        <ConfirmModal
+          textAcceptButton="Sí"
+          textCancelButton="No"
+          uppetText="Confirmar"
+          bodyText="¿Desea eliminar el usuario?"
+          onConfirm={confirmDelete}
+          onClose={closeModal}
+        ></ConfirmModal>
+      ) : null}
       <section className="container mx-auto p-6 font-mono">
         <div className="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
           <div className="w-full overflow-x-auto">
