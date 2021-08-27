@@ -41,9 +41,30 @@ const Person = ({ person }) => {
           onClose={closeModal}
         ></ConfirmModal>
       ) : null}
-      <div>{person.nombre} </div>{" "}
-      <button onClick={() => editPerson(person.id)}> Editar</button>{" "}
-      <button onClick={() => deleteAction(person.id)}> Eliminar</button>{" "}
+      <td className="px-4 py-3 border">
+        <div className=" text-sm ">
+          <div>
+            <p className="font-semibold text-black ">{person.nombre}</p>
+          </div>
+        </div>
+      </td>
+      <td className="px-4 py-3 text-ms font-semibold border text-center">
+        {person.run}
+      </td>
+      <td className="px-4 py-3 text-xs border text-center">
+        <button
+          onClick={() => editPerson(person.id)}
+          className="btn-primary p-2 mx-2"
+        >
+          Editar
+        </button>
+        <button
+          onClick={() => deleteAction(person.id)}
+          className="btn-warning p-2"
+        >
+          Eliminar
+        </button>
+      </td>
     </>
   );
 };

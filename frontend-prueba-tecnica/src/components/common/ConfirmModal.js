@@ -28,7 +28,7 @@ const ConfirmModal = ({
             {/*footer*/}
             <div className="flex justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
               <button
-                className="btn font-bold  transition-all duration-150 "
+                className="btn-secondary font-bold  transition-all duration-150 w-1/4 mx-2"
                 type="button"
                 onClick={() => {
                   onClose();

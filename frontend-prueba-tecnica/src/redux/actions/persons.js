@@ -5,6 +5,7 @@ import {
   CREATE_PERSON,
   UPDATE_PERSON,
   CLEAN_PERSON_EDIT,
+  ADD_MESSAGE,
 } from "../../constants/actionsTypes";
 import * as API_PERSON from "../../api/Person";
 
@@ -33,6 +34,9 @@ export const getPerson = (id) => async (dispatch) => {
 export const updatePerson = (id, personData) => async (dispatch) => {
   try {
     const { data } = await API_PERSON.updatePerson(id, personData);
+    console.log("gola");
+
+    dispatch({ type: ADD_MESSAGE, payload: "Persona editada con éxito" });
     dispatch({ type: UPDATE_PERSON, payload: data });
   } catch (error) {
     console.log(error);
@@ -42,6 +46,7 @@ export const updatePerson = (id, personData) => async (dispatch) => {
 export const createPerson = (id) => async (dispatch) => {
   try {
     const { data } = await API_PERSON.createPerson(id);
+    dispatch({ type: ADD_MESSAGE, payload: "Persona creada con éxito" });
     dispatch({ type: CREATE_PERSON, payload: data });
   } catch (error) {
     console.log(error);
@@ -52,6 +57,7 @@ export const deletePerson = (id) => async (dispatch) => {
   try {
     const { data } = await API_PERSON.deletePerson(id);
     dispatch({ type: DELETE_PERSON, payload: data.id });
+    dispatch({ type: ADD_MESSAGE, payload: "Persona eliminada con éxito" });
   } catch (error) {
     console.log(error);
   }

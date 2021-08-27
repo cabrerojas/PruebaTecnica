@@ -1,14 +1,8 @@
 import validateRut from "./validateRut";
 
 const validatePersonForm = (personData) => {
-  //let errors = {};
   const { errors, body, dv } = validateRut(personData.run);
   console.log(errors);
-  /*if (!personData.run.trim()) {
-    errors.run = "El RUT es requerido";
-  } else {
-    
-  }*/
 
   if (!personData.nombres.trim()) {
     errors.nombres = "El campo Nombres es requerido";
@@ -45,10 +39,12 @@ const validatePersonForm = (personData) => {
     errors.direccion = "Debe agregar una dirección";
   }
 
-  if (!Number.isInteger(personData.telefono)) {
+  if (!Number.isInteger(parseInt(personData.telefono))) {
     errors.telefono = "El campo teléfono solo acepta números";
   } else if (!personData.telefono) {
     errors.telefono = "Debe agregar un teléfono";
+  } else if (personData.telefono.length > 9) {
+    errors.telefono = "Excede la cantidad de digitos";
   }
 
   if (!personData.observaciones) {
@@ -59,12 +55,3 @@ const validatePersonForm = (personData) => {
 };
 
 export default validatePersonForm;
-
-/*
-
-
-    runCuerpo: "",
-    runDigito: "",
-    observaciones: "",
-
-*/

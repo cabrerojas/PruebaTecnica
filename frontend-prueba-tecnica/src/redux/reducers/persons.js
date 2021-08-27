@@ -29,7 +29,7 @@ export default (persons = initialState, action) => {
     case UPDATE_PERSON:
       return {
         ...persons,
-        person_list: persons.map((person) =>
+        person_list: persons.person_list.map((person) =>
           person.id === action.payload.id ? action.payload : person
         ),
       };

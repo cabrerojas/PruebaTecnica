@@ -24,7 +24,7 @@ const PersonForm = () => {
   const dispatch = useDispatch();
   const [isCreating] = useState(id === "0");
 
-  const [personData, setPersonData] = useState({
+  const initPersonData = {
     run: "",
     runCuerpo: "",
     runDigito: "",
@@ -40,7 +40,8 @@ const PersonForm = () => {
     direccion: "",
     telefono: "",
     observaciones: "",
-  });
+  };
+  const [personData, setPersonData] = useState(initPersonData);
 
   const [regionsOptions, setRegionsOptions] = useState([]);
   const [citiesOptions, setCitiesOptions] = useState([]);
@@ -188,31 +189,29 @@ const PersonForm = () => {
       return false;
     }
 
+    const preSave = {
+      ...personData,
+      runCuerpo: parseInt(body),
+      runDigito: String(dv),
+      sexoCodigo: parseInt(personData.sexoCodigo),
+      regionCodigo: parseInt(personData.regionCodigo),
+      comunaCodigo: parseInt(personData.comunaCodigo),
+      ciudadCodigo: parseInt(personData.ciudadCodigo),
+      telefono: parseInt(personData.telefono),
+    };
+
     if (isCreating) {
-      dispatch(
-        createPerson({
-          ...personData,
-          runCuerpo: parseInt(body),
-          runDigito: String(dv),
-          sexoCodigo: parseInt(personData.sexoCodigo),
-          regionCodigo: parseInt(personData.regionCodigo),
-          comunaCodigo: parseInt(personData.comunaCodigo),
-          ciudadCodigo: parseInt(personData.ciudadCodigo),
-          telefono: parseInt(personData.telefono),
-        })
-      );
+      dispatch(createPerson(preSave));
+      //Clean form
+      setPersonData(initPersonData);
+      setSelectedCommuneOption(0);
+      setSelectedCityOption(0);
+      setSelectedRegionOption(0);
     } else {
       dispatch(
         updatePerson(person.id, {
-          ...personData,
+          ...preSave,
           id: person.id,
-          runCuerpo: parseInt(body),
-          runDigito: String(dv),
-          sexoCodigo: parseInt(personData.sexoCodigo),
-          regionCodigo: parseInt(personData.regionCodigo),
-          comunaCodigo: parseInt(personData.comunaCodigo),
-          ciudadCodigo: parseInt(personData.ciudadCodigo),
-          telefono: parseInt(personData.telefono),
         })
       );
     }
@@ -226,156 +225,343 @@ const PersonForm = () => {
 
   return (
     <>
-      <div>{person ? "Editar usuario " + person.nombre : "Crear usuario"}</div>
-      <form action="" onSubmit={handleSubmit}>
-        <label htmlFor="">Rut</label>
-        <br />
-        <input
-          type="text"
-          name="run"
-          value={personData.run}
-          onChange={(e) => handleChange(e)}
-          placeholder="11.111.111-1"
-        />
-        {errors.run && <p>{errors.run}</p>}
-        <br />
-        <label htmlFor="">Nombres</label>
-        <br />
-        <input
-          type="text"
-          name="nombres"
-          value={personData.nombres}
-          placeholder="Nombres"
-          onChange={(e) => handleChange(e)}
-        />
-        {errors.nombres && <p>{errors.nombres}</p>}
-        <label htmlFor="">Apellido Paterno</label>
-        <input
-          type="text"
-          name="apellidoPaterno"
-          value={personData.apellidoPaterno}
-          placeholder="Apellido paterno"
-          onChange={(e) => handleChange(e)}
-        />
-        {errors.apellidoPaterno && <p>{errors.apellidoPaterno}</p>}
-        <label htmlFor="">Apellido Materno</label>
-        <input
-          type="text"
-          name="apellidoMaterno"
-          value={personData.apellidoMaterno}
-          placeholder="Apellido materno"
-          onChange={(e) => handleChange(e)}
-        />
-        {errors.apellidoMaterno && <p>{errors.apellidoMaterno}</p>}
-        <br />
-        <label htmlFor="">Email</label>
-        <br />
-        <input
-          type="text"
-          name="email"
-          value={personData.email}
-          placeholder="correo@correo.cl"
-          onChange={(e) => handleChange(e)}
-        />
-        {errors.email && <p>{errors.email}</p>}
-        <br />
-        <label htmlFor="">Sexo</label>
-        <br />
-        <input
-          type="radio"
-          value="M"
-          name="gender"
-          checked={personData?.sexoCodigo == 1}
-          onChange={(e) => radioChange(e)}
-        />{" "}
-        Masculino
-        <input
-          type="radio"
-          value="F"
-          name="gender"
-          checked={personData?.sexoCodigo == 2}
-          onChange={(e) => radioChange(e)}
-        />{" "}
-        Femenino
-        <br />
-        {errors.sexoCodigo && <p>{errors.sexoCodigo}</p>}
-        <label htmlFor="">Fecha Nacimiento</label>
-        <br />
-        <input
-          type="date"
-          name="fechaNacimiento"
-          value={personData.fechaNacimiento}
-          onChange={(e) => handleChange(e)}
-        />
-        {errors.fechaNacimiento && <p>{errors.fechaNacimiento}</p>}
-        <br />
-        <label htmlFor="">Región</label>
-        <br />
-        <Select
-          options={regionsOptions}
-          onChange={(e) => regionOnChange(e)}
-          value={selectedRegionOption}
-          placeholder="Seleccione"
-          name="regionCodigo"
-        />
-        {errors.regionCodigo && <p>{errors.regionCodigo}</p>}
-        <br />
-        <label htmlFor="">Ciudad</label>
-        <br />
-        <Select
-          options={citiesOptions}
-          onChange={(e) => cityOnChange(e)}
-          value={selectedCityOption}
-          placeholder="Seleccione"
-        />
-        {errors.ciudadCodigo && <p>{errors.ciudadCodigo}</p>}
-        <br />
-        <label htmlFor="">Comuna</label>
-        <br />
-        <Select
-          options={communesOptions}
-          onChange={(e) => communeOnChange(e)}
-          value={selectedCommuneOption}
-          placeholder="Seleccione"
-        />
-        {errors.comunaCodigo && <p>{errors.comunaCodigo}</p>}
-        <br />
-        <label htmlFor="">Dirección</label>
-        <br />
-        <input
-          type="text"
-          name="direccion"
-          value={personData.direccion}
-          onChange={(e) => handleChange(e)}
-          placeholder="Dirección"
-        />
-        {errors.direccion && <p>{errors.direccion}</p>}
-        <br />
-        <label htmlFor="">Teléfono</label>
-        <br />
-        <input
-          type="text"
-          name="telefono"
-          value={personData.telefono}
-          placeholder="+56999999999"
-          onChange={(e) => handleChange(e)}
-        />
-        {errors.telefono && <p>{errors.telefono}</p>}
-        <br />
-        <label htmlFor="">Observaciones</label>
-        <br />
-        <input
-          type="text"
-          name="observaciones"
-          value={personData.observaciones}
-          placeholder="Observaciones"
-          onChange={(e) => handleChange(e)}
-        />
-        {errors.observaciones && <p>{errors.observaciones}</p>}
-        <br />
-        <button onClick={() => history.push("/persons")}>Volver</button>
-        <button type="submit">Guardar</button>
-      </form>
+      <section className="container mx-auto p-6 font-mono">
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
+          <p className="pb-4 text-lg font-bold">
+            {isCreating ? "Crear Persona" : "Editar Persona"}
+          </p>
+
+          <form action="" onSubmit={handleSubmit}>
+            <div className="-mx-3 md:flex mb-3">
+              <div className="md:w-1/4 px-3 flex-col">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-password"
+                >
+                  R.U.N:
+                </label>
+                <input
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-1 px-4 mb-1"
+                  name="run"
+                  type="text"
+                  placeholder="11.111.111-1"
+                  value={personData.run}
+                  onChange={(e) => handleChange(e)}
+                />
+                {errors.run && (
+                  <p className="text-red-600 text-xs italic">{errors.run}</p>
+                )}
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-3">
+              <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-first-name"
+                >
+                  Nombres
+                </label>
+                <input
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-1 px-4 mb-1"
+                  name="nombres"
+                  type="text"
+                  placeholder="Nombres"
+                  value={personData.nombres}
+                  onChange={(e) => handleChange(e)}
+                />
+
+                {errors.nombres && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.nombres}
+                  </p>
+                )}
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-last-name"
+                >
+                  Apellido Paterno
+                </label>
+                <input
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-1 px-4 mb-1"
+                  name="apellidoPaterno"
+                  type="text"
+                  value={personData.apellidoPaterno}
+                  placeholder="Apellido paterno"
+                  onChange={(e) => handleChange(e)}
+                />
+
+                {errors.apellidoPaterno && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.apellidoPaterno}
+                  </p>
+                )}
+              </div>
+              <div className="md:w-1/2 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-last-name"
+                >
+                  Apellido Materno
+                </label>
+                <input
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-1 px-4 mb-1"
+                  name="apellidoMaterno"
+                  type="text"
+                  value={personData.apellidoMaterno}
+                  placeholder="Apellido materno"
+                  onChange={(e) => handleChange(e)}
+                />
+
+                {errors.apellidoMaterno && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.apellidoMaterno}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-3">
+              <div className="md:w-1/3 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-password"
+                >
+                  Email
+                </label>
+                <input
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-1 px-4 mb-1"
+                  name="email"
+                  type="text"
+                  value={personData.email}
+                  placeholder="correo@correo.cl"
+                  onChange={(e) => handleChange(e)}
+                />
+
+                {errors.email && (
+                  <p className="text-red-600 text-xs italic">{errors.email}</p>
+                )}
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-3">
+              <div className="md:w-1/3 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-password"
+                >
+                  Sexo
+                </label>
+                <div className="flex">
+                  <div className="px-2">
+                    <input
+                      type="radio"
+                      value="M"
+                      name="gender"
+                      checked={personData?.sexoCodigo == 1}
+                      onChange={(e) => radioChange(e)}
+                    />{" "}
+                    Masculino
+                  </div>
+                  <div className="px-2">
+                    <input
+                      type="radio"
+                      value="F"
+                      name="gender"
+                      checked={personData?.sexoCodigo == 2}
+                      onChange={(e) => radioChange(e)}
+                    />{" "}
+                    Femenino
+                  </div>
+                </div>
+                {errors.sexoCodigo && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.sexoCodigo}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-3">
+              <div className="md:w-1/6 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-password"
+                >
+                  Fecha Nacimiento
+                </label>
+                <input
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-1 px-4 mb-1"
+                  type="date"
+                  name="fechaNacimiento"
+                  value={personData.fechaNacimiento}
+                  onChange={(e) => handleChange(e)}
+                />
+
+                {errors.fechaNacimiento && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.fechaNacimiento}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-3">
+              <div className="md:w-1/3 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-password"
+                >
+                  Región
+                </label>
+
+                <Select
+                  options={regionsOptions}
+                  onChange={(e) => regionOnChange(e)}
+                  value={selectedRegionOption}
+                  placeholder="Seleccione"
+                  name="regionCodigo"
+                />
+
+                {errors.regionCodigo && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.regionCodigo}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-3">
+              <div className="md:w-1/3 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-password"
+                >
+                  Ciudad
+                </label>
+
+                <Select
+                  options={citiesOptions}
+                  onChange={(e) => cityOnChange(e)}
+                  value={selectedCityOption}
+                  placeholder="Seleccione"
+                />
+
+                {errors.ciudadCodigo && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.ciudadCodigo}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-3">
+              <div className="md:w-1/3 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-password"
+                >
+                  Comuna
+                </label>
+
+                <Select
+                  options={communesOptions}
+                  onChange={(e) => communeOnChange(e)}
+                  value={selectedCommuneOption}
+                  placeholder="Seleccione"
+                />
+
+                {errors.comunaCodigo && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.comunaCodigo}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-3">
+              <div className="md:w-1/3 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-password"
+                >
+                  Dirección
+                </label>
+                <input
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-1 px-4 mb-1"
+                  type="text"
+                  name="direccion"
+                  value={personData.direccion}
+                  onChange={(e) => handleChange(e)}
+                  placeholder="Dirección"
+                />
+
+                {errors.direccion && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.direccion}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-3">
+              <div className="md:w-1/3 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-password"
+                >
+                  Teléfono
+                </label>
+                <input
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-1 px-4 mb-1"
+                  type="text"
+                  name="telefono"
+                  value={personData.telefono}
+                  placeholder="999999999"
+                  onChange={(e) => handleChange(e)}
+                />
+
+                {errors.telefono && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.telefono}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="-mx-3 md:flex mb-1">
+              <div className="md:w-1/3 px-3">
+                <label
+                  className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  forhtml="grid-password"
+                >
+                  Observaciones
+                </label>
+                <textarea
+                  className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-1 px-4 mb-1 "
+                  type="textarea"
+                  name="observaciones"
+                  value={personData.observaciones}
+                  placeholder="Observaciones"
+                  onChange={(e) => handleChange(e)}
+                />
+
+                {errors.observaciones && (
+                  <p className="text-red-600 text-xs italic">
+                    {errors.observaciones}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex-grow"></div>
+              <div className="">
+                <button
+                  className="btn-secondary p-2 m-2"
+                  onClick={() => history.push("/persons")}
+                >
+                  Volver
+                </button>
+                <button className="btn-primary p-2 m-2" type="submit">
+                  Guardar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
     </>
   );
 };
