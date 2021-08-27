@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { setShowConfirmModal, setDeleteId } from "../../redux/actions/persons";
 import { useHistory } from "react-router-dom";

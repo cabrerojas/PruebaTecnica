@@ -62,7 +62,7 @@ const PersonForm = () => {
   }, []);
 
   useEffect(() => {
-    if (person && regions.length > 0) {
+    if (person) {
       //Parseo datos evitar enviar null a un componente controlado
       setPersonData({
         ...personData,
@@ -84,23 +84,48 @@ const PersonForm = () => {
         telefono: person.telefono ? person.telefono : "",
         observaciones: person.observaciones ? person.observaciones : "",
       });
+      if (regionsOptions.length > 0) {
+        setSelectedRegionOption(
+          regionsOptions.find((region) => region.value === person.regionCodigo)
+        );
 
-      setSelectedRegionOption(
-        regionsOptions.find((region) => region.value === person.regionCodigo)
-      );
+        setSelectedCityOption(
+          citiesOptions.find((city) => city.value === person.ciudadCodigo)
+        );
+        setSelectedCommuneOption(
+          communesOptions.find(
+            (commune) => commune.value === person.comunaCodigo
+          )
+        );
+      }
     }
-  }, [person, regions]);
+  }, [person, regionsOptions]);
 
   /*TRAER DATOS SI CAMBIA EL COMBO*/
 
   useEffect(() => {
-    dispatch(getCities(personData.regionCodigo));
-    /**/
+    //dispatch(getCities(personData.regionCodigo));
+    dispatch(
+      getCities(
+        selectedRegionOption
+          ? selectedRegionOption.value
+          : personData.regionCodigo
+      )
+    );
   }, [selectedRegionOption]);
 
   useEffect(() => {
     if (selectedCityOption) {
-      dispatch(getCommunes(personData.regionCodigo, personData.ciudadCodigo));
+      dispatch(
+        getCommunes(
+          selectedRegionOption
+            ? selectedRegionOption.value
+            : personData.regionCodigo,
+          selectedCityOption
+            ? selectedCityOption.value
+            : personData.ciudadCodigo
+        )
+      );
     }
   }, [selectedCityOption]);
 
@@ -109,7 +134,11 @@ const PersonForm = () => {
   useEffect(() => {
     if (person) {
       setSelectedCityOption(
-        citiesOptions.find((city) => city.value === person.ciudadCodigo)
+        citiesOptions.find((city) =>
+          city.value === selectedCityOption
+            ? selectedCityOption.value
+            : personData.ciudadCodigo
+        )
       );
     }
   }, [citiesOptions]);
@@ -117,7 +146,13 @@ const PersonForm = () => {
   useEffect(() => {
     if (person) {
       setSelectedCommuneOption(
-        communesOptions.find((commune) => commune.value === person.comunaCodigo)
+        communesOptions.find(
+          (commune) =>
+            commune.value ===
+            (selectedCommuneOption
+              ? selectedCommuneOption.value
+              : personData.comunaCodigo)
+        )
       );
     }
   }, [communesOptions]);
@@ -166,11 +201,15 @@ const PersonForm = () => {
   const regionOnChange = (e) => {
     setSelectedRegionOption(e);
     setPersonData({ ...personData, regionCodigo: e.value });
+
+    setSelectedCityOption(null);
+    setSelectedCommuneOption(null);
   };
 
   const cityOnChange = (e) => {
     setSelectedCityOption(e);
     setPersonData({ ...personData, ciudadCodigo: e.value });
+    setSelectedCommuneOption(null);
   };
 
   const communeOnChange = (e) => {

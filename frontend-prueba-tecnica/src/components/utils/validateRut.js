@@ -13,12 +13,6 @@ const validateRut = (rut) => {
   // Formatear RUN
   rut = cuerpo + "-" + dv;
 
-  // Si no cumple con el mínimo ej. (n.nnn.nnn)
-  if (cuerpo.length < 7) {
-    errors.run = "RUT Incompleto";
-    return { errors: errors };
-  }
-
   // Calcular Dígito Verificador
   let suma = 0;
   let multiplo = 2;
@@ -43,11 +37,11 @@ const validateRut = (rut) => {
   let dvEsperado = 11 - (suma % 11);
 
   // Casos Especiales (0 y K)
-  dv = dv == "K" ? 10 : dv;
-  dv = dv == 0 ? 11 : dv;
+  dv = dv === "K" ? 10 : dv;
+  dv = dv === 0 ? 11 : dv;
 
   // Validar que el Cuerpo coincide con su Dígito Verificador
-  if (dvEsperado != dv) {
+  if (String(dvEsperado) !== String(dv)) {
     errors.run = "RUT Incorrecto";
     return { errors: errors };
   } else {

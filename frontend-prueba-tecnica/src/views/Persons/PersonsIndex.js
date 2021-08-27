@@ -29,18 +29,14 @@ const PersonsIndex = () => {
     history.push("/person/" + id);
   };
 
-  //  const [showConfirmModal, setShowConfirmModal] = useState(false);
-
   const confirmDelete = () => {
     dispatch(deletePerson(deleteId));
     closeModal();
-    // console.log("eliminando id:" + deleteId);
   };
 
   const closeModal = () => {
     dispatch(setShowConfirmModal(false));
     dispatch(cleanDeleteId());
-    //despachar cerrar modal
   };
 
   return (

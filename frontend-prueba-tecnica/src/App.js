@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Home from "./views/Home/Home";
 import PersonIndex from "./views/Persons/PersonsIndex";
 import PersonForm from "./components/Persons/PersonForm";
 import { ToastContainer, toast } from "react-toastify";

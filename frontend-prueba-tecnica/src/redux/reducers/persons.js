@@ -21,13 +21,13 @@ export default (persons = initialState, action) => {
   switch (action.type) {
     case FETCH_ALL_PERSONS:
       return { ...persons, person_list: action.payload };
-      break;
+
     case DELETE_PERSON_ID:
       return { ...persons, person_id_delete: action.payload };
-      break;
+
     case SET_CONFIRM_MODAL_STATUS:
       return { ...persons, confirm_modal_status: action.payload };
-      break;
+
     case DELETE_PERSON:
       return {
         ...persons,
@@ -35,11 +35,10 @@ export default (persons = initialState, action) => {
           (person) => person.id !== action.payload
         ),
       };
-      break;
+
     case FETCH_PERSON:
       return { ...persons, person_edit: action.payload };
 
-      break;
     case UPDATE_PERSON:
       return {
         ...persons,
@@ -48,19 +47,14 @@ export default (persons = initialState, action) => {
         ),
       };
 
-      break;
     case CREATE_PERSON:
       return { ...persons, person_list: persons.push(action.payload) };
 
-      break;
     case CLEAN_PERSON_EDIT:
       return { ...persons, person_edit: null };
 
-      break;
     case CLEAN_DELETE_ID:
       return { ...persons, person_id_delete: null };
-
-      break;
 
     default:
       return persons;

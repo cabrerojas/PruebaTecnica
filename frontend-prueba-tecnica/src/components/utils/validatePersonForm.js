@@ -2,7 +2,6 @@ import validateRut from "./validateRut";
 
 const validatePersonForm = (personData) => {
   const { errors, body, dv } = validateRut(personData.run);
-  console.log(errors);
 
   if (!personData.nombres.trim()) {
     errors.nombres = "El campo Nombres es requerido";

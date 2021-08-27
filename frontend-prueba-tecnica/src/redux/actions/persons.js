@@ -42,7 +42,6 @@ export const getPerson = (id) => async (dispatch) => {
 export const updatePerson = (id, personData) => async (dispatch) => {
   try {
     const { data } = await API_PERSON.updatePerson(id, personData);
-    console.log("gola");
     dispatch({ type: ADD_MESSAGE, payload: "Persona editada con éxito" });
     dispatch({ type: UPDATE_PERSON, payload: data });
   } catch (error) {
