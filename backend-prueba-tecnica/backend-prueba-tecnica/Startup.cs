@@ -29,7 +29,7 @@ namespace backend_prueba_tecnica
         {
             services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
             {
-                builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+                builder.WithOrigins(Configuration["CorsUrl:Front"]).AllowAnyMethod().AllowAnyHeader();
             }));
             services.AddControllers();
             services.AddDbContext<PruebaTecnicaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PruebaTecnica")));
@@ -46,8 +46,7 @@ namespace backend_prueba_tecnica
                 app.UseDeveloperExceptionPage();
             }
 
-            
-
+        
             app.UseHttpsRedirection();
 
             app.UseRouting();
