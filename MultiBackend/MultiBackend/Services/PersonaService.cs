@@ -63,6 +63,48 @@ namespace MultiBackend.IServices
             }
         }
 
+        public Boolean EditarPersona(PersonaVm persona) {
+            try
+            {
+                var personaOriginal = _context.Personas.FirstOrDefault(x => x.Id == persona.Id);
+
+                if (personaOriginal == null) {
+                    return false;
+                }
+
+                var sexo = _context.Sexos.FirstOrDefault(x => x.Codigo == persona.SexoCodigo);
+                var comuna = _context.Comunas.FirstOrDefault(x => x.Codigo == persona.ComunaCodigo && x.CiudadCodigo == persona.CiudadCodigo && x.RegionCodigo == persona.RegionCodigo);
+
+                personaOriginal.Run = persona.Run;
+                personaOriginal.RunCuerpo = persona.RunCuerpo;
+                personaOriginal.RunDigito = persona.RunDigito;
+                personaOriginal.Nombre = persona.Nombre;
+                personaOriginal.Nombres = persona.Nombres;
+                personaOriginal.ApellidoPaterno = persona.ApellidoPaterno;
+                personaOriginal.ApellidoMaterno = persona.ApellidoMaterno;
+                personaOriginal.Email = persona.Email;
+                personaOriginal.SexoCodigo = persona.SexoCodigo;
+                personaOriginal.FechaNacimiento = persona.FechaNacimiento;
+                personaOriginal.ComunaCodigo = persona.ComunaCodigo;
+                personaOriginal.Direccion = persona.Direccion;
+                personaOriginal.Telefono = persona.Telefono;
+                personaOriginal.Observaciones = persona.Observaciones;
+                personaOriginal.RegionCodigo = persona.RegionCodigo;
+                personaOriginal.CiudadCodigo = persona.CiudadCodigo;
+
+                _context.Personas.Update(personaOriginal);
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Exception}", ex);
+                return false;
+                throw;
+            }            
+        }
+
         public Boolean EliminarPersona(Guid id) {
             try
             {

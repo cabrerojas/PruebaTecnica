@@ -10,6 +10,7 @@ namespace MultiBackend.IServices
     {
         IEnumerable<Persona> GetPersonas();
         Boolean AgregarPersona(PersonaVm persona);
+        Boolean EditarPersona(PersonaVm persona);
         Boolean EliminarPersona(Guid id);
     }
 }

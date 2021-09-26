@@ -56,6 +56,27 @@ namespace MultiBackend.Controllers
             return response;
         }
 
+        [HttpPut("EditarPersona")]
+        public ResponseModel EditarPersona(PersonaVm persona)
+        {
+            ResponseModel response = new ResponseModel();
+            response.messageResponse = "Editar persona";
+
+            bool personaEditada = _personaService.EditarPersona(persona);
+
+            if (personaEditada)
+            {
+                response.data = true;
+            }
+            else
+            {
+                response.data = false;
+                response.error = "Ocurrio un error al intentar editar esta persona";
+            }
+
+            return response;
+        }
+
         [HttpDelete("EliminarPersona")]
         public ResponseModel EliminarPersona(Guid id)
         {

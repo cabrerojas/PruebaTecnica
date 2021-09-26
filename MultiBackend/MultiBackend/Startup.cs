@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MultiBackend.IServices;
 using MultiBackend.Models;
+using MultiBackend.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace MultiBackend
             options.UseSqlServer(Configuration["DbConnection"]));
 
             services.AddTransient<IPersonaService, PersonaService>();
+            services.AddTransient<IRegionService, RegionService>();
 
             services.AddCors(options =>
             {
@@ -47,6 +49,9 @@ namespace MultiBackend
             });
 
             AddSwagger(services);
+
+            services.AddControllers().AddNewtonsoftJson(x =>
+                x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -65,6 +70,8 @@ namespace MultiBackend
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Foo API V1");
             });
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 
