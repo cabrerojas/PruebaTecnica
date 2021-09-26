@@ -29,12 +29,13 @@ namespace MultiBackend.IServices
             {
                 var sexo = _context.Sexos.FirstOrDefault(x => x.Codigo == persona.SexoCodigo);
                 var comuna = _context.Comunas.FirstOrDefault(x => x.Codigo == persona.ComunaCodigo && x.CiudadCodigo == persona.CiudadCodigo && x.RegionCodigo == persona.RegionCodigo );
+                string[] collection = persona.Run.Split("-"); 
 
                 var personaNueva = new Persona();
+                
                 personaNueva.Run = persona.Run;
-                personaNueva.RunCuerpo = persona.RunCuerpo;
-                personaNueva.RunDigito = persona.RunDigito;
-                personaNueva.Nombre = persona.Nombre;
+                personaNueva.RunCuerpo = int.Parse(collection[0]);
+                personaNueva.RunDigito = collection[1];
                 personaNueva.Nombres = persona.Nombres;
                 personaNueva.ApellidoPaterno = persona.ApellidoPaterno;
                 personaNueva.ApellidoMaterno = persona.ApellidoMaterno;
@@ -74,11 +75,12 @@ namespace MultiBackend.IServices
 
                 var sexo = _context.Sexos.FirstOrDefault(x => x.Codigo == persona.SexoCodigo);
                 var comuna = _context.Comunas.FirstOrDefault(x => x.Codigo == persona.ComunaCodigo && x.CiudadCodigo == persona.CiudadCodigo && x.RegionCodigo == persona.RegionCodigo);
+                persona.Run = persona.Run.Replace(".","");
+                string[] collection = persona.Run.Split("-");
 
                 personaOriginal.Run = persona.Run;
-                personaOriginal.RunCuerpo = persona.RunCuerpo;
-                personaOriginal.RunDigito = persona.RunDigito;
-                personaOriginal.Nombre = persona.Nombre;
+                personaOriginal.RunCuerpo = int.Parse(collection[0]);
+                personaOriginal.RunDigito = collection[1];
                 personaOriginal.Nombres = persona.Nombres;
                 personaOriginal.ApellidoPaterno = persona.ApellidoPaterno;
                 personaOriginal.ApellidoMaterno = persona.ApellidoMaterno;

@@ -38,9 +38,6 @@ namespace MultiBackend.Models
     public class PersonaVm {
         public Guid Id { get; set; }
         public string Run { get; set; }
-        public int RunCuerpo { get; set; }
-        public string RunDigito { get; set; }
-        public string Nombre { get; set; }
         public string Nombres { get; set; }
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
