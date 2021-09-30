@@ -1,0 +1,69 @@
+﻿@page "/"
+@using PruebaTecnicaJAGFront.Data
+@using System.Text.Json
+@using System.Text.Json.Serialization;
+@inject IHttpClientFactory ClientFactory
+
+
+@using PruebaTecnicaJAGFront.Services
+@inject IPersonasServices PersonasServices
+
+<h1>Conexión con api prueba técnica</h1>
+
+@if (listarPersonas == null)
+{
+    <p>Por favor espere.</p>
+}
+else
+{
+    <table class="table table-striped" style="font-size: 12px">
+        <thead>
+            <tr>
+                <th>Rut</th>
+                <th>Nombres</th>
+                <th>Dirección</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in listarPersonas)
+            {
+                <tr>
+                    <td>@p.Rut</td>
+                    <td>@p.Name</td>
+                    <td>@p.Direccion</td>
+                    <td>@p.Email</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<Personas> personas = Array.Empty<Personas>();
+    
+    private bool shouldRender;
+
+    protected override bool ShouldRender() => shouldRender;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarPersonas();
+    }
+
+    private List<Personas> listarPersonas { get; set; } = new List<Personas>();
+
+    public async Task CargarPersonas()
+    {
+        if (listarPersonas != null)
+        {
+            listarPersonas = await PersonasServices.GetListarPersonasAsync();
+        }
+        else
+        {
+            shouldRender = true;
+        }
+    }
+
+}

@@ -1,0 +1,2 @@
+Para la visualización de los datos se tiene que levantar primero el proyecto PruebaTecnicaJG que a su vez será leido por el PruebaTecnicaJAGFront por el puerto: 443138 o  la ruta: https://localhost:44318/api
+
