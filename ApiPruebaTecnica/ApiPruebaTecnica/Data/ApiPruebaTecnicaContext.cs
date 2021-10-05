@@ -15,5 +15,11 @@ namespace ApiPruebaTecnica.Data
         }
 
         public DbSet<ApiPruebaTecnica.Models.Persona> Persona { get; set; }
+
+        public DbSet<ApiPruebaTecnica.Models.Ciudad> Ciudad { get; set; }
+
+        public DbSet<ApiPruebaTecnica.Models.Comuna> Comuna { get; set; }
+
+        public DbSet<ApiPruebaTecnica.Models.Region> Region { get; set; }
     }
 }
